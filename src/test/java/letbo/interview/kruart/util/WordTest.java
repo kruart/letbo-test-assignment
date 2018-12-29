@@ -1,37 +1,23 @@
 package letbo.interview.kruart.util;
 
-import letbo.interview.kruart.App;
-import letbo.interview.kruart.TestController;
-import letbo.interview.kruart.config.AppConfig;
+import letbo.interview.kruart.AbstractTest;
 import letbo.interview.kruart.model.Word;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest(classes = App.class)
-@TestPropertySource(locations = "classpath:application-test.properties")
-class WordTest {
-
-    @Autowired
-    AppConfig config;
-
-    @Autowired
-    TestController t;
+class WordTest extends AbstractTest {
 
     @Test
-    void testRandomWord() throws IOException {
+    void testRandomWord() {
         String word = WordUtil.randomWord(config.getPathToFile());
         assertNotNull(word);
-        assertTrue(word.startsWith("developer"));
+        assertEquals("dev", word);
     }
 
     @Test
-    void testCreateWord() throws IOException {
+    void testCreateWord() {
         String str = WordUtil.randomWord(config.getPathToFile());
         Word word = new Word(str, config.getMask());
 
