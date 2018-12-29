@@ -5,6 +5,8 @@ import letbo.interview.kruart.model.Game;
 import letbo.interview.kruart.model.Status;
 import letbo.interview.kruart.to.PlayerTO;
 import letbo.interview.kruart.util.WordUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
  */
 @Repository
 public class GamePlay {
+    private final Logger logger = LoggerFactory.getLogger(GamePlay.class);
 
     private Game game;
 
@@ -25,6 +28,7 @@ public class GamePlay {
     }
 
     public String start() {
+        logger.info("calling 'start()' method");
         if (game.getStatus() != Status.NOT_STARTED) {
             return "The Game is already " + game.getStatus().getValue() + "!";
         }
@@ -34,6 +38,7 @@ public class GamePlay {
     }
 
     public String newGame() {
+        logger.info("calling 'newGame()' method");
         this.game = new Game();
         return startGame();
     }
@@ -50,6 +55,7 @@ public class GamePlay {
     }
 
     public String register(String player) {
+        logger.info("calling 'register()' method");
         if (game.getStatus() == Status.NOT_STARTED) {
             if (!getPlayers().contains(player)) {
                 game.setPlayer(player);
@@ -65,6 +71,7 @@ public class GamePlay {
     }
 
     public String getWord() {
+        logger.info("calling 'getWord()' method");
         if (game.getStatus() == Status.STARTED || game.getStatus() == Status.FINISHED) {
             return String.valueOf(game.getWord().getHiddenLetters());
         } else {
@@ -73,10 +80,12 @@ public class GamePlay {
     }
 
     public List<String> getPlayers() {
+        logger.info("calling 'getPlayers()' method");
         return game.getPlayers();
     }
 
     public String move(PlayerTO player) {
+        logger.info("calling 'move()' method");
         if (game.getStatus() == Status.STARTED) {
             String p = getCurrentPlayer();
             if (p.equals(player.getName())) {
@@ -97,14 +106,14 @@ public class GamePlay {
     /**
      * player who must move now
      */
-    public String getCurrentPlayer() {
+    private String getCurrentPlayer() {
         return game.getPlayers().get(0);
     }
 
     /**
      * When the player misses, he becomes at the end of the queue
      */
-    public void nextPlayer(String p) {
+    private void nextPlayer(String p) {
         game.getPlayers().remove(p);    // remove from the head
         game.setPlayer(p);              // add to the tail
     }
