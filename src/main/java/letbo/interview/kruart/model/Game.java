@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Game {
-    private List<Player> players;
+    private List<String> players;
     private Status status;
     private Word word;
 
@@ -14,18 +14,12 @@ public class Game {
         this.status = Status.NOT_STARTED;
     }
 
-    public void start() {
-        setStatus(Status.STARTED);
-    }
-
-    public void finish() { setStatus(Status.FINISHED); }
-
-    public List<Player> getPlayers() {
+    public List<String> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
-        this.players = players;
+    public void setPlayer(String player) {
+        this.players.add(player);
     }
 
     public Status getStatus() {
