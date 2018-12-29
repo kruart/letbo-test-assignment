@@ -48,7 +48,7 @@ public class GamePlay {
             String s = WordUtil.randomWord(config.getPathToFile());
             game.createWord(s, config.getMask());
             game.setStatus(Status.STARTED);
-            return "The Game is started! Guess the letter: " + getWord();
+            return "The Game is started! " + getCurrentPlayer() + ", guess the letter: " + getWord();
         } else {
             return "Requires at least 1 player! Please register!";
         }
@@ -64,7 +64,7 @@ public class GamePlay {
                 return "A player with this name already exists!";
             }
         } else if (game.getStatus() == Status.STARTED) {
-            return "The game is started!";
+            return "The game is already started!";
         }  else {
             return "The game is over!";  // Status == FINISHED
         }

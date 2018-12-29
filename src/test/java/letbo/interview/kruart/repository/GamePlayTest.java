@@ -32,7 +32,7 @@ class GamePlayTest extends AbstractTest {
     void testStartGameIsStarted() {
         gamePlay.register(doe.getName());
         String response = gamePlay.start();
-        assertEquals("The Game is started! Guess the letter: " + gamePlay.getWord(), response);
+        assertEquals("The Game is started! John Doe, guess the letter: " + gamePlay.getWord(), response);
         assertEquals(1, gamePlay.getPlayers().size());
     }
 
@@ -69,7 +69,7 @@ class GamePlayTest extends AbstractTest {
     void testRegisterGameIsStarted() {
         gamePlay.register(doe.getName());
         gamePlay.start();
-        assertEquals("The game is started!", gamePlay.register(doe.getName()));
+        assertEquals("The game is already started!", gamePlay.register(doe.getName()));
     }
 
     @Test
