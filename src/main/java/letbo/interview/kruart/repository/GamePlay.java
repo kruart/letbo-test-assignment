@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static letbo.interview.kruart.util.Messages.*;
+
 /**
  * In memory realization
  */
@@ -31,7 +33,7 @@ public class GamePlay {
     public GameInfoTo start() {
         logger.info("calling 'start()' method");
         if (game.getStatus() != Status.NOT_STARTED) {
-            return gameInfo("The Game is already " + game.getStatus().getValue() + "!");
+            return gameInfo(String.format(STARTED_OR_FINISHED_FMT, game.getStatus().getValue()));
         }
         else {
             return startGame();
@@ -41,7 +43,7 @@ public class GamePlay {
     public GameInfoTo newGame() {
         logger.info("calling 'newGame()' method");
         this.game = new Game();
-        return gameInfo("The New Game is created! Please register!");
+        return gameInfo(NEW_GAME);
     }
 
     private GameInfoTo startGame() {
@@ -49,9 +51,9 @@ public class GamePlay {
             String s = WordUtil.randomWord(config.getPathToFile());
             game.setWord(s, config.getMask());
             game.setStatus(Status.STARTED);
-            return gameInfo("The Game is started!");
+            return gameInfo(STARTED);
         } else {
-            return gameInfo("Requires at least 1 player! Please register!");
+            return gameInfo(NO_PLAYERS);
         }
     }
 
@@ -60,12 +62,12 @@ public class GamePlay {
         if (game.getStatus() == Status.NOT_STARTED) {
             if (!getPlayers().contains(player)) {
                 game.setPlayer(player);
-                return gameInfo(player + " has just registered!");
+                return gameInfo(String.format(PLAYER_REGISTERED_FMT, player));
             } else {
-                return gameInfo("A player with this name already exists!");
+                return gameInfo(NAME_DUPLICATION);
             }
         } else  {
-            return gameInfo("The Game is already " + game.getStatus().getValue() + "!");  // Status == STARTED or FINISHED
+            return gameInfo(String.format(STARTED_OR_FINISHED_FMT, game.getStatus().getValue()));   // Status == STARTED or FINISHED
         }
     }
 
@@ -74,7 +76,7 @@ public class GamePlay {
         if (game.getStatus() == Status.STARTED || game.getStatus() == Status.FINISHED) {
             return String.valueOf(game.getWord().getHiddenLetters());
         } else {
-            return "None";
+            return NONE;
         }
     }
 
@@ -89,16 +91,16 @@ public class GamePlay {
             String p = getCurrentPlayer();
             if (p.equals(player.getName())) {
                 if (openLetters(player.getLetter().toCharArray()[0])) {
-                    return isWin() ? getWinner() :  gameInfo("Wow! You've guessed! Move again.");
+                    return isWin() ? getWinner() :  gameInfo(GUESSED);
                 } else {
                     nextPlayer(p);
-                    return gameInfo("You've missed :/");
+                    return gameInfo(MISSED);
                 }
             } else {
-                return gameInfo("Now " +  p + " is moving, not you!");
+                return gameInfo(String.format(NOT_YOUR_MOVE_FMT, p));
             }
         } else {
-            return gameInfo("The Game has not started yet!");
+            return gameInfo(NOT_STARTED);
         }
     }
 
@@ -113,7 +115,7 @@ public class GamePlay {
      * player who must move now
      */
     private String getCurrentPlayer() {
-        return game.getPlayers().size() != 0 ? game.getPlayers().get(0) : "None";
+        return game.getPlayers().size() != 0 ? game.getPlayers().get(0) : NONE;
     }
 
     /**
@@ -150,6 +152,6 @@ public class GamePlay {
     private GameInfoTo getWinner() {
         game.setStatus(Status.FINISHED);
         game.setWinner(getCurrentPlayer());
-        return gameInfo(getCurrentPlayer() + " is WINNER!");
+        return gameInfo(String.format(WINNER_FMT, getCurrentPlayer()));
     }
 }

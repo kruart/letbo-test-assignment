@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static letbo.interview.kruart.util.Messages.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GamePlayTest extends AbstractTest {
@@ -23,7 +24,7 @@ class GamePlayTest extends AbstractTest {
     @Test
     void testStartGameHasNoRegisteredPlayers() {
         GameInfoTo response = gamePlay.start();
-        assertEquals("Requires at least 1 player! Please register!", response.getMessage());
+        assertEquals(NO_PLAYERS, response.getMessage());
         assertEquals(0, gamePlay.getPlayers().size());
     }
 
@@ -31,7 +32,7 @@ class GamePlayTest extends AbstractTest {
     void testStartGameIsStarted() {
         gamePlay.register(doe.getName());
         GameInfoTo response = gamePlay.start();
-        assertEquals("The Game is started!", response.getMessage());
+        assertEquals(STARTED, response.getMessage());
         assertEquals(1, response.getPlayerNames().size());
         assertEquals(Status.STARTED.getValue(), response.getGameStatus());
         assertEquals("Unknown", response.getWinner());
@@ -41,7 +42,7 @@ class GamePlayTest extends AbstractTest {
     void testStartGameIsAlreadyStarted() {
         gamePlay.register(doe.getName());
         gamePlay.start();
-        assertEquals("The Game is already started!", gamePlay.start().getMessage());
+        assertEquals(String.format(STARTED_OR_FINISHED_FMT, "started"), gamePlay.start().getMessage());
     }
 
     @Test
@@ -51,7 +52,7 @@ class GamePlayTest extends AbstractTest {
         winTheGame();
         GameInfoTo response = gamePlay.start();
 
-        assertEquals("The Game is already finished!", response.getMessage());
+        assertEquals(String.format(STARTED_OR_FINISHED_FMT, "finished"), response.getMessage());
         assertEquals("John Doe", response.getWinner());
     }
 
@@ -59,35 +60,35 @@ class GamePlayTest extends AbstractTest {
     void testNewGame() {
         gamePlay.register(doe.getName());
         GameInfoTo response = gamePlay.start();
-        assertEquals("The Game is started!", response.getMessage());
+        assertEquals(STARTED, response.getMessage());
         assertEquals(Status.STARTED.getValue(), response.getGameStatus());
 
         response = gamePlay.newGame();
-        assertEquals("The New Game is created! Please register!", response.getMessage());
+        assertEquals(NEW_GAME, response.getMessage());
         assertEquals(Status.NOT_STARTED.getValue(), response.getGameStatus());
         assertEquals(0, response.getPlayerNames().size());
-        assertEquals("None", response.getCurrentMove());
-        assertEquals("None", response.getWord());
+        assertEquals(NONE, response.getCurrentMove());
+        assertEquals(NONE, response.getWord());
         assertEquals("Unknown", response.getWinner());
     }
 
     @Test
     void testRegisterNewPlayer() {
         assertEquals(0, gamePlay.getPlayers().size());
-        assertEquals("John Doe has just registered!", gamePlay.register(doe.getName()).getMessage());
+        assertEquals(String.format(PLAYER_REGISTERED_FMT, "John Doe"), gamePlay.register(doe.getName()).getMessage());
     }
 
     @Test
     void testRegisterPlayerWithThisNameAlreadyExists() {
         gamePlay.register(doe.getName());
-        assertEquals("A player with this name already exists!", gamePlay.register(doe.getName()).getMessage());
+        assertEquals(NAME_DUPLICATION, gamePlay.register(doe.getName()).getMessage());
     }
 
     @Test
     void testRegisterGameIsStarted() {
         gamePlay.register(doe.getName());
         gamePlay.start();
-        assertEquals("The Game is already started!", gamePlay.register(doe.getName()).getMessage());
+        assertEquals(String.format(STARTED_OR_FINISHED_FMT, "started"), gamePlay.register(doe.getName()).getMessage());
     }
 
     @Test
@@ -96,7 +97,7 @@ class GamePlayTest extends AbstractTest {
         gamePlay.start();
 
         winTheGame();
-        assertEquals("The Game is already finished!", gamePlay.register("John Doe").getMessage());
+        assertEquals(String.format(STARTED_OR_FINISHED_FMT, "finished"), gamePlay.register(doe.getName()).getMessage());
     }
 
     @Test
@@ -111,31 +112,31 @@ class GamePlayTest extends AbstractTest {
     @Test
     void testGetWordFailed() {
         gamePlay.register(doe.getName());
-        assertEquals("None", gamePlay.getWord());   // Game Not Started yet
+        assertEquals(NONE, gamePlay.getWord());   // Game Not Started yet
     }
 
     @Test
     void testMoveSucceed() {
         gamePlay.register(doe.getName());
         gamePlay.start();
-        assertEquals("Wow! You've guessed! Move again.", gamePlay.move(doe).getMessage());
+        assertEquals(GUESSED, gamePlay.move(doe).getMessage());
     }
 
     @Test
     void testMoveFailedGameNotStarted() {
         gamePlay.register(roe.getName());
-        assertEquals("The Game has not started yet!", gamePlay.move(roe).getMessage());
+        assertEquals(NOT_STARTED, gamePlay.move(roe).getMessage());
     }
 
     @Test
     void testMoveMissed() {
         gamePlay.register(roe.getName());
         gamePlay.register(doe.getName());
-        assertEquals(roe.getName(), gamePlay.start().getCurrentMove());
+        assertEquals("Richard Roe", gamePlay.start().getCurrentMove());
 
         GameInfoTo info = gamePlay.move(roe);
-        assertEquals("You've missed :/", info.getMessage());
-        assertEquals(doe.getName(), info.getCurrentMove());
+        assertEquals(MISSED, info.getMessage());
+        assertEquals("John Doe", info.getCurrentMove());
         assertEquals(2, info.getPlayerNames().size());
     }
 
@@ -145,8 +146,8 @@ class GamePlayTest extends AbstractTest {
         gamePlay.register(doe.getName());
         gamePlay.start();
 
-        assertEquals("You've missed :/", gamePlay.move(roe).getMessage());
-        assertEquals("Now John Doe is moving, not you!", gamePlay.move(roe).getMessage());
+        assertEquals(MISSED, gamePlay.move(roe).getMessage());
+        assertEquals(String.format(NOT_YOUR_MOVE_FMT, "John Doe"), gamePlay.move(roe).getMessage());
     }
 
     @Test
@@ -155,8 +156,8 @@ class GamePlayTest extends AbstractTest {
         gamePlay.start();
         GameInfoTo response = winTheGame();
 
-        assertEquals("John Doe is WINNER!", response.getMessage());
-        assertEquals("John Doe", response.getWinner());
+        assertEquals(String.format(WINNER_FMT, doe.getName()), response.getMessage());
+        assertEquals(doe.getName(), response.getWinner());
         assertEquals(Status.FINISHED.getValue(), response.getGameStatus());
     }
 

@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static letbo.interview.kruart.util.Messages.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,7 +36,7 @@ class GamePlayControllerTest extends AbstractTest {
     void testStart() throws Exception {
         mvc.perform(post("/game/start").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(writeValue(gameInfo("Requires at least 1 player! Please register!"))))
+                .andExpect(content().json(writeValue(gameInfo(NO_PLAYERS))))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
@@ -46,7 +47,7 @@ class GamePlayControllerTest extends AbstractTest {
 
         mvc.perform(post("/game/new"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(writeValue(gameInfo("The New Game is created! Please register!"))))
+                .andExpect(content().json(writeValue(gameInfo(NEW_GAME))))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
@@ -57,9 +58,8 @@ class GamePlayControllerTest extends AbstractTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(doe)))
                 .andExpect(status().isOk())
-                .andExpect(content().json(writeValue(gameInfo("John Doe has just registered!"))))
+                .andExpect(content().json(writeValue(gameInfo(String.format(PLAYER_REGISTERED_FMT, "John Doe")))))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-
     }
 
     @Test
@@ -71,7 +71,7 @@ class GamePlayControllerTest extends AbstractTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(doe)))
                 .andExpect(status().isOk())
-                .andExpect(content().json(writeValue(gameInfo("Wow! You've guessed! Move again."))))
+                .andExpect(content().json(writeValue(gameInfo(GUESSED))))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 

@@ -25,40 +25,20 @@ public class GameInfoTo {
         return word;
     }
 
-    public void setWord(String word) {
-        this.word = word;
-    }
-
     public String getCurrentMove() {
         return currentMove;
-    }
-
-    public void setCurrentMove(String currentMove) {
-        this.currentMove = currentMove;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public String getGameStatus() {
         return gameStatus;
     }
 
-    public void setGameStatus(String gameStatus) {
-        this.gameStatus = gameStatus;
-    }
-
     public List<String> getPlayerNames() {
         return playerNames;
-    }
-
-    public void setPlayerNames(List<String> playerNames) {
-        this.playerNames = playerNames;
     }
 
     public String getWinner() {
