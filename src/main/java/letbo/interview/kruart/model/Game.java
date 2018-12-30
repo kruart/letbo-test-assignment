@@ -6,12 +6,14 @@ import java.util.List;
 
 public class Game {
     private List<String> players;
+    private String winner;
     private Status status;
     private Word word;
 
     public Game() {
         this.players = Collections.synchronizedList(new ArrayList<>());
         this.status = Status.NOT_STARTED;
+        this.winner = "Unknown";
     }
 
     public List<String> getPlayers() {
@@ -34,7 +36,15 @@ public class Game {
         return word;
     }
 
-    public void createWord(String w, String mask) {
+    public void setWord(String w, String mask) {
         this.word = new Word(w, mask);
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
     }
 }
