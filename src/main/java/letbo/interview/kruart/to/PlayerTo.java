@@ -1,13 +1,13 @@
 package letbo.interview.kruart.to;
 
 
-public class PlayerTO {
+public class PlayerTo {
     private String name;
     private String letter;
 
-    public PlayerTO() {}
+    public PlayerTo() {}
 
-    public PlayerTO(String name, String letter) {
+    public PlayerTo(String name, String letter) {
         this.name = name;
         this.letter = letter;
     }

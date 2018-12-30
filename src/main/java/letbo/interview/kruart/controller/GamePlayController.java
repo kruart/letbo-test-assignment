@@ -1,11 +1,13 @@
 package letbo.interview.kruart.controller;
 
 import letbo.interview.kruart.repository.GamePlay;
-import letbo.interview.kruart.to.PlayerTO;
+import letbo.interview.kruart.to.GameInfoTo;
+import letbo.interview.kruart.to.PlayerTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,30 +33,30 @@ public class GamePlayController {
     }
 
     @PostMapping("/start")
-    public String start() {
+    public GameInfoTo start() {
         logger.debug("calling 'start' method ['/game/start']");
         return gamePlay.start();
     }
 
     @PostMapping("/new")
-    public String newgame() {
+    public GameInfoTo newgame() {
         logger.debug("calling 'newgame' method ['/game/new']");
         return gamePlay.newGame();
     }
 
     @PostMapping(value="/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String register(@RequestBody PlayerTO player) {
+    public GameInfoTo register(@RequestBody PlayerTo player) {
         logger.debug("calling 'register' method ['/game/register']");
         return gamePlay.register(player.getName());
     }
 
     @PutMapping("/move")
-    public String move(@RequestBody PlayerTO player) {
+    public GameInfoTo move(@RequestBody PlayerTo player) {
         logger.debug("calling 'move' method ['/game/move']");
         return gamePlay.move(player);
     }
 
-    public GamePlay getGamePlay() {
+    GamePlay getGamePlay() {
         return gamePlay;
     }
 }

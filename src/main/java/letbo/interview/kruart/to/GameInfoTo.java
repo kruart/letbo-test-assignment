@@ -60,4 +60,8 @@ public class GameInfoTo {
     public void setPlayerNames(List<String> playerNames) {
         this.playerNames = playerNames;
     }
+
+    public String getWinner() {
+        return winner;
+    }
 }

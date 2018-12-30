@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import letbo.interview.kruart.AbstractTest;
 import letbo.interview.kruart.App;
+import letbo.interview.kruart.to.GameInfoTo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,12 @@ class GamePlayControllerTest extends AbstractTest {
         controller.getGamePlay().newGame();
     }
 
-
     @Test
     void testStart() throws Exception {
-        mvc.perform(post("/game/start"))
+        mvc.perform(post("/game/start").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Requires at least 1 player! Please register!"))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
+                .andExpect(content().json(writeValue(gameInfo("Requires at least 1 player! Please register!"))))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -46,8 +46,8 @@ class GamePlayControllerTest extends AbstractTest {
 
         mvc.perform(post("/game/new"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Requires at least 1 player! Please register!"))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
+                .andExpect(content().json(writeValue(gameInfo("The New Game is created! Please register!"))))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
 
@@ -57,8 +57,9 @@ class GamePlayControllerTest extends AbstractTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(doe)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("John Doe has just registered! We're already have 1 player(s)!"))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
+                .andExpect(content().json(writeValue(gameInfo("John Doe has just registered!"))))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
     }
 
     @Test
@@ -70,8 +71,8 @@ class GamePlayControllerTest extends AbstractTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(doe)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Wow! You've guessed! Move again. Guess the letter: *e*"))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
+                .andExpect(content().json(writeValue(gameInfo("Wow! You've guessed! Move again."))))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -96,11 +97,15 @@ class GamePlayControllerTest extends AbstractTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
-    public static <T> String writeValue(T obj) {
+    private static <T> String writeValue(T obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
         }
+    }
+
+    private GameInfoTo gameInfo(String message) {
+        return controller.getGamePlay().gameInfo(message);
     }
 }
