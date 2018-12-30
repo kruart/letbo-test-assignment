@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -46,12 +47,13 @@ public class GamePlayController {
 
     @PostMapping(value="/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public GameInfoTo register(@RequestBody PlayerTo player) {
+        if (player.getName() == null) throw new NullPointerException("Name cannot be null");
         logger.debug("calling 'register' method ['/game/register']");
         return gamePlay.register(player.getName());
     }
 
     @PutMapping("/move")
-    public GameInfoTo move(@RequestBody PlayerTo player) {
+    public GameInfoTo move(@Valid @RequestBody PlayerTo player) {
         logger.debug("calling 'move' method ['/game/move']");
         return gamePlay.move(player);
     }
