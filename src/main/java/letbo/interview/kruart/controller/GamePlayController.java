@@ -21,15 +21,15 @@ public class GamePlayController {
     private GamePlay gamePlay;
 
     @GetMapping("/word")
-    public String getWord() {
+    public ResponseEntity<String> getWord() {
         logger.debug("calling 'getWord' method ['/game/word']");
-        return gamePlay.getWord();
+        return ResponseEntity.ok(gamePlay.getWord());
     }
 
     @GetMapping("/players")
-    public List<String> getPlayers() {
+    public ResponseEntity<List<String>> getPlayers() {
         logger.debug("calling 'getPlayers' method ['/game/players']");
-        return gamePlay.getPlayers();
+        return ResponseEntity.ok(gamePlay.getPlayers());
     }
 
     @PostMapping("/start")
