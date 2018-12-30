@@ -1,5 +1,7 @@
 package letbo.interview.kruart.util;
 
+import letbo.interview.kruart.util.exception.FileNotExistsException;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,7 +19,7 @@ public class WordUtil {
         try {
             lines = Files.readAllLines(Paths.get(path));
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new FileNotExistsException(String.format("%s file not exists", path));
         }
         return lines.get(new Random().nextInt(lines.size()));
     }
