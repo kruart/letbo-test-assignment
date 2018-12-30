@@ -106,7 +106,7 @@ class GamePlayControllerTest extends AbstractTest {
         mvc.perform(post("/game/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(doe)))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
     }
 

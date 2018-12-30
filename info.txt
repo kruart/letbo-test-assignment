@@ -14,6 +14,16 @@ Endpoints:
 > game/players - возращает список игроков
 > game/move - ход игрока
 
+Ответ приходит в выгляде:
+{
+    "word":         "<sometext>",
+    "currentMove":  "<sometext>",
+    "gameStatus":   "<sometext>",
+    "message":      "<sometext>",
+    "playerNames":  [],
+    "winner":"      <sometext>"
+}
+
 Пример создания игры на двух пользователей:
 > curl -s -X POST -d '{"name":"John Doe"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/game/register
 > curl -s -X POST -d '{"name":"Richard Roe"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/game/register

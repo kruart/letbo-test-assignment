@@ -1,12 +1,16 @@
 package letbo.interview.kruart.to;
 
+import letbo.interview.kruart.util.Check;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
 public class PlayerTo {
-    @NotNull(message = "The name cannot be null")
-    @Size(min = 3, max = 15, message = "The name must be from 3 to 15 characters")
+    // Check.OnRegister.class, when we register, we need validate only name without letter
+    @NotNull(groups = {Check.OnRegister.class, Default.class}, message = "The name cannot be null")
+    @Size(groups = {Check.OnRegister.class, Default.class}, min = 3, max = 15, message = "The name must be from 3 to 15 characters")
     private String name;
 
     @NotNull(message = "The letter cannot be null")
