@@ -132,7 +132,8 @@ public class GamePlay {
     private boolean openLetters(char letter) {
         boolean isOpened = false;
         for (int i = 0; i < game.getWord().getLetters().length; i++) {
-            if (game.getWord().getLetters()[i] == letter) {
+            if (game.getWord().getLetters()[i] == letter
+                    && String.valueOf(game.getWord().getHiddenLetters()[i]).equals(game.getWord().getMask())) { //if not yet open
                 game.getWord().getHiddenLetters()[i] = letter;
                 isOpened = true;
             }

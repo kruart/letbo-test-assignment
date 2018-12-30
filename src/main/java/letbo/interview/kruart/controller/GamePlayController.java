@@ -46,8 +46,11 @@ public class GamePlayController {
     }
 
     @PostMapping(value="/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public GameInfoTo register(@RequestBody PlayerTo player) {
-        if (player.getName() == null) throw new NullPointerException("Name cannot be null");
+    public GameInfoTo register(@RequestBody PlayerTo player) throws Exception {
+        String name = player.getName();
+        if (name == null || name.length() < 3 || name.length() > 15) {
+            throw new Exception("Name cannot be null and must be from 3 to 15 characters");
+        }
         logger.debug("calling 'register' method ['/game/register']");
         return gamePlay.register(player.getName());
     }

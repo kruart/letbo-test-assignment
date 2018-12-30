@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import letbo.interview.kruart.AbstractTest;
 import letbo.interview.kruart.App;
 import letbo.interview.kruart.to.GameInfoTo;
+import letbo.interview.kruart.to.PlayerTo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,32 @@ class GamePlayControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(writeValue(controller.getGamePlay().getPlayers())))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void testRegisterNullName() throws Exception {
+        PlayerTo p = doe;
+        p.setName(null);
+
+        mvc.perform(post("/game/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(doe)))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
+    }
+
+    @Test
+    void testMoveNameAndLetterNulls() throws Exception {
+        controller.register(doe);
+        controller.start();
+        PlayerTo p = new PlayerTo(null, null);
+
+        mvc.perform(put("/game/move")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(p)))
+                .andExpect(status().isUnprocessableEntity())
+//                .andExpect(content().string("The name cannot be null and The letter cannot be null")) //random, not stable
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));
     }
 
     private static <T> String writeValue(T obj) {
