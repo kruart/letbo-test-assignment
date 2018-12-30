@@ -1,7 +1,6 @@
 package letbo.interview.kruart.repository;
 
 import letbo.interview.kruart.AbstractTest;
-import letbo.interview.kruart.to.PlayerTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,6 @@ class GamePlayTest extends AbstractTest {
 
     @Autowired
     protected GamePlay gamePlay;
-
-    PlayerTO doe = new PlayerTO("John Doe", "e");
-    PlayerTO roe = new PlayerTO("Richard Roe", "f");
 
     @BeforeEach
     void setUp() {
