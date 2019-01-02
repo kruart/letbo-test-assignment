@@ -1,6 +1,8 @@
 package letbo.interview.kruart.to;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameInfoTo {
     private String word;
@@ -12,12 +14,12 @@ public class GameInfoTo {
 
     public GameInfoTo() {}
 
-    public GameInfoTo(String word, String currentMove, String gameStatus, String message, List<String> playerNames, String winner) {
+    public GameInfoTo(String word, String currentMove, String gameStatus, String message, ConcurrentLinkedQueue<String> playerNames, String winner) {
         this.word = word;
         this.currentMove = currentMove;
         this.gameStatus = gameStatus;
         this.message = message;
-        this.playerNames = playerNames;
+        this.playerNames = new ArrayList<>(playerNames);
         this.winner = winner;
     }
 

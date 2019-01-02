@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @RestController
 @RequestMapping(value = "/game")
@@ -30,7 +30,7 @@ public class GamePlayController {
     }
 
     @GetMapping("/players")
-    public ResponseEntity<List<String>> getPlayers() {
+    public ResponseEntity<ConcurrentLinkedQueue<String>> getPlayers() {
         logger.debug("calling 'getPlayers' method ['/game/players']");
         return ResponseEntity.ok(gamePlay.getPlayers());
     }

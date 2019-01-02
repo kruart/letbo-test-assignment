@@ -1,22 +1,20 @@
 package letbo.interview.kruart.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
-    private List<String> players;
+    private ConcurrentLinkedQueue<String> players;
     private String winner;
     private Status status;
     private Word word;
 
     public Game() {
-        this.players = Collections.synchronizedList(new ArrayList<>());
+        this.players = new ConcurrentLinkedQueue<>();
         this.status = Status.NOT_STARTED;
         this.winner = "Unknown";
     }
 
-    public List<String> getPlayers() {
+    public ConcurrentLinkedQueue<String> getPlayers() {
         return players;
     }
 

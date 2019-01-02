@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static letbo.interview.kruart.util.Messages.*;
 
@@ -80,7 +80,7 @@ public class GamePlay {
         }
     }
 
-    public List<String> getPlayers() {
+    public ConcurrentLinkedQueue<String> getPlayers() {
         logger.info("calling 'getPlayers()' method");
         return game.getPlayers();
     }
@@ -93,7 +93,7 @@ public class GamePlay {
                 if (openLetters(player.getLetter().toCharArray()[0])) {
                     return isWin() ? getWinner() :  gameInfo(GUESSED);
                 } else {
-                    nextPlayer(p);
+                    nextPlayer();
                     return gameInfo(MISSED);
                 }
             } else {
@@ -115,15 +115,15 @@ public class GamePlay {
      * player who must move now
      */
     private String getCurrentPlayer() {
-        return game.getPlayers().size() != 0 ? game.getPlayers().get(0) : NONE;
+        return game.getPlayers().size() != 0 ? game.getPlayers().peek() : NONE;
     }
 
     /**
      * When the player misses, he becomes at the end of the queue
      */
-    private void nextPlayer(String p) {
-        game.getPlayers().remove(p);    // remove from the head
-        game.setPlayer(p);              // add to the tail
+    private void nextPlayer() {
+        String p = game.getPlayers().poll();    // remove from the head
+        game.setPlayer(p);                      // add to the tail
     }
 
     /**
