@@ -2,7 +2,7 @@ package letbo.interview.kruart.model;
 
 public class Word {
     private char[] letters;
-    private char[] hiddenLetters;
+    private volatile char[] hiddenLetters;
     private String mask;
 
     public Word(String word, String mask) {

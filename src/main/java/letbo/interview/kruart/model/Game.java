@@ -4,8 +4,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
     private ConcurrentLinkedQueue<String> players;
-    private String winner;
-    private Status status;
+    private volatile String winner;
+    private volatile Status status;
     private Word word;
 
     public Game() {
@@ -18,7 +18,7 @@ public class Game {
         return players;
     }
 
-    public void setPlayer(String player) {
+    public synchronized void setPlayer(String player) {
         this.players.add(player);
     }
 
@@ -26,7 +26,7 @@ public class Game {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public synchronized void setStatus(Status status) {
         this.status = status;
     }
 
@@ -42,7 +42,7 @@ public class Game {
         return winner;
     }
 
-    public void setWinner(String winner) {
+    public synchronized void setWinner(String winner) {
         this.winner = winner;
     }
 }
