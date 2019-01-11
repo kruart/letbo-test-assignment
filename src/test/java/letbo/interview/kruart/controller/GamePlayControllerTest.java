@@ -2,28 +2,19 @@ package letbo.interview.kruart.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import letbo.interview.kruart.AbstractTest;
-import letbo.interview.kruart.App;
 import letbo.interview.kruart.to.GameInfoTo;
 import letbo.interview.kruart.to.PlayerTo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static letbo.interview.kruart.util.Messages.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = App.class)
-@AutoConfigureMockMvc
-class GamePlayControllerTest extends AbstractTest {
-    @Autowired
-    private MockMvc mvc;
+class GamePlayControllerTest  extends AbstractControllerTest {
 
     @Autowired
     private GamePlayController controller;
