@@ -6,7 +6,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +32,9 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.deepPurple,
                 textColor: Colors.white,
                 elevation: 10.0,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed('/homepage');
+                },
               ),
             ],
           ),
