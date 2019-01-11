@@ -1,6 +1,7 @@
 package letbo.interview.kruart.controller;
 
 import letbo.interview.kruart.util.exception.FileNotExistsException;
+import letbo.interview.kruart.util.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -25,6 +26,13 @@ public class ExceptionDispatcher {
     public String handleError(FileNotExistsException e) {
         log.error(e.toString());
         return e.toString();
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)  // 404
+    @ExceptionHandler({UserNotFoundException.class})
+    public String handleError(UserNotFoundException e) {
+        log.error(e.toString());
+        return e.getMessage();
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
