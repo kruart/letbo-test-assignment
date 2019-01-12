@@ -31,39 +31,11 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                TextFormField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(hintText: 'Username'),
-                  keyboardType: TextInputType.emailAddress,
-                  onSaved: (String value) {
-                    _name = value;
-                  },
-                  validator: validateName,
-                ),
+                usernameField(),
                 SizedBox(height: 15.0,),
-                TextFormField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(hintText: 'Password'),
-                  obscureText: true,
-                  onSaved: (String value) {
-                    _password = value;
-                  },
-                  validator: validatePassword,
-                ),
+                passwordField(),
                 SizedBox(height: 15.0,),
-                RaisedButton(
-                  child: Text('Login'),
-                  color: Colors.deepPurple,
-                  textColor: Colors.white,
-                  elevation: 10.0,
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save(); //calls onSaved methods in TextFormField elements
-                      UserController.signin(_name, _password)
-                          .then((e) => e.statusCode == 200 ? Navigator.of(context).pushReplacementNamed('/homepage') : showErrorMessage(e.body));
-                    }
-                  },
-                ),
+                loginButton(),
                 SizedBox(height: 15.0,),
                 Text(_errorMessage, style: TextStyle(color: Colors.red)),
               ],
@@ -71,6 +43,47 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
           ),
         ),
       ),
+    );
+  }
+
+
+  Widget usernameField() {
+    return TextFormField(
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(hintText: 'Username'),
+//      keyboardType: TextInputType.emailAddress,
+      onSaved: (String value) {
+        _name = value;
+      },
+      validator: validateName,
+    );
+  }
+
+  Widget passwordField() {
+    return TextFormField(
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(hintText: 'Password'),
+      obscureText: true,
+      onSaved: (String value) {
+        _password = value;
+      },
+      validator: validatePassword,
+    );
+  }
+
+  Widget loginButton() {
+    return RaisedButton(
+      child: Text('Login'),
+      color: Colors.deepPurple,
+      textColor: Colors.white,
+      elevation: 10.0,
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save(); //calls onSaved methods in TextFormField elements
+          UserController.signin(_name, _password)
+              .then((e) => e.statusCode == 200 ? Navigator.of(context).pushReplacementNamed('/homepage') : showErrorMessage(e.body));
+        }
+      },
     );
   }
 }
