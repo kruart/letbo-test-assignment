@@ -37,6 +37,11 @@ class _LoginPageState extends State<LoginPage> {
                   onSaved: (String value) {
                     _name = value;
                   },
+                  validator: (String value) {
+                    if (value.length < 4) {
+                      return "Username must be at least 4 characters";
+                    }
+                  },
                 ),
                 SizedBox(height: 15.0,),
                 TextFormField(
@@ -46,6 +51,11 @@ class _LoginPageState extends State<LoginPage> {
                   onSaved: (String value) {
                     _password = value;
                   },
+                  validator: (String value) {
+                    if (value.length < 4) {
+                      return "Password must be at least 4 characters";
+                    }
+                  },
                 ),
                 SizedBox(height: 15.0,),
                 RaisedButton(
@@ -54,15 +64,17 @@ class _LoginPageState extends State<LoginPage> {
                   textColor: Colors.white,
                   elevation: 10.0,
                   onPressed: () {
-                    _formKey.currentState.save(); //calls onSaved methods in TextFormField elements
-                    UserController.signin(_name, _password)
-                        .then((e) => e.statusCode == 200 ? Navigator.of(context).pushReplacementNamed('/homepage') : showErrorMessage(e.body));
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save(); //calls onSaved methods in TextFormField elements
+                      UserController.signin(_name, _password)
+                          .then((e) => e.statusCode == 200 ? Navigator.of(context).pushReplacementNamed('/homepage') : showErrorMessage(e.body));
+                    }
                   },
                 ),
                 SizedBox(height: 15.0,),
                 Text(
-                  _errorMessage,
-                  style: TextStyle(color: Colors.red)),
+                    _errorMessage,
+                    style: TextStyle(color: Colors.red)),
               ],
             ),
           ),
