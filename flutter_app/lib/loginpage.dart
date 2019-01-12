@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'user_controller.dart';
+import 'validation_mixin.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with ValidationMixin {
   final _formKey = GlobalKey<FormState>();
 
   String _name;
@@ -37,11 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                   onSaved: (String value) {
                     _name = value;
                   },
-                  validator: (String value) {
-                    if (value.length < 4) {
-                      return "Username must be at least 4 characters";
-                    }
-                  },
+                  validator: validateName,
                 ),
                 SizedBox(height: 15.0,),
                 TextFormField(
@@ -51,11 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                   onSaved: (String value) {
                     _password = value;
                   },
-                  validator: (String value) {
-                    if (value.length < 4) {
-                      return "Password must be at least 4 characters";
-                    }
-                  },
+                  validator: validatePassword,
                 ),
                 SizedBox(height: 15.0,),
                 RaisedButton(
@@ -72,9 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 SizedBox(height: 15.0,),
-                Text(
-                    _errorMessage,
-                    style: TextStyle(color: Colors.red)),
+                Text(_errorMessage, style: TextStyle(color: Colors.red)),
               ],
             ),
           ),
