@@ -35,4 +35,12 @@ public class UserTo {
     public int hashCode() {
         return Objects.hash(name, password);
     }
+
+    @Override
+    public String toString() {
+        return "UserTo{" +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
