@@ -9,20 +9,21 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with ValidationMixin {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldstate = new GlobalKey<ScaffoldState>();
 
   String _name;
   String _password;
-  String _errorMessage = '';
 
   showErrorMessage(String body) {
-    setState(() {
-      _errorMessage = body;
-    });
+    _scaffoldstate.currentState.showSnackBar(
+        new SnackBar(content: new Text(body), backgroundColor: Colors.deepPurple,)
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldstate,
       body: Center(
         child: Container(
           padding: EdgeInsets.all(35.0),
@@ -37,7 +38,6 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
                 SizedBox(height: 15.0,),
                 _loginButton(),
                 SizedBox(height: 15.0,),
-                Text(_errorMessage, style: TextStyle(color: Colors.red)),
               ],
             ),
           ),
