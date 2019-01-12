@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
         appBar: new AppBar(
           title: new Text('Dashboard'),
           centerTitle: true,
+          backgroundColor: Colors.deepPurple,
         ),
         body: Center(
           child: Container(

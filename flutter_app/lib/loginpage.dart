@@ -31,11 +31,11 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                usernameField(),
+                _usernameField(),
                 SizedBox(height: 15.0,),
-                passwordField(),
+                _passwordField(),
                 SizedBox(height: 15.0,),
-                loginButton(),
+                _loginButton(),
                 SizedBox(height: 15.0,),
                 Text(_errorMessage, style: TextStyle(color: Colors.red)),
               ],
@@ -47,31 +47,27 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
   }
 
 
-  Widget usernameField() {
+  Widget _usernameField() {
     return TextFormField(
       textAlign: TextAlign.center,
-      decoration: InputDecoration(hintText: 'Username'),
+      decoration: _inputDecoration('Username'),
 //      keyboardType: TextInputType.emailAddress,
-      onSaved: (String value) {
-        _name = value;
-      },
+      onSaved: (String value) => _name = value,
       validator: validateName,
     );
   }
 
-  Widget passwordField() {
+  Widget _passwordField() {
     return TextFormField(
       textAlign: TextAlign.center,
-      decoration: InputDecoration(hintText: 'Password'),
+      decoration: _inputDecoration('Password'),
       obscureText: true,
-      onSaved: (String value) {
-        _password = value;
-      },
+      onSaved: (String value) => _password = value,
       validator: validatePassword,
     );
   }
 
-  Widget loginButton() {
+  Widget _loginButton() {
     return RaisedButton(
       child: Text('Login'),
       color: Colors.deepPurple,
@@ -84,6 +80,13 @@ class _LoginPageState extends State<LoginPage> with ValidationMixin {
               .then((e) => e.statusCode == 200 ? Navigator.of(context).pushReplacementNamed('/homepage') : showErrorMessage(e.body));
         }
       },
+    );
+  }
+
+  InputDecoration _inputDecoration(String hintText) {
+    return InputDecoration(
+      hintText: hintText,
+      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple, width: 2.0)),
     );
   }
 }
